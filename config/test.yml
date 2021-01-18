@@ -1,0 +1,4 @@
+database:
+  database: vuetube-test
+  dropSchema: true
+  synchronize: true

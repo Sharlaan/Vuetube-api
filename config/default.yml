@@ -1,0 +1,15 @@
+settings:
+  loggerFormat: tiny
+  session:
+    store: '@foal/typeorm'
+  jwt:
+    secretEncoding: base64
+    secret: env(JWT_SECRET)
+
+database:
+  type: postgres
+  host: env(DB_HOST)
+  port: env(DB_PORT)
+  username: env(DB_USERNAME)
+  password: env(DB_PASSWORD)
+  database: env(DB_NAME)

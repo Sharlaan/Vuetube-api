@@ -1,12 +1,18 @@
-# VueTube RESTful API - YouTube Clone
+# VueTube API
 
 > VueTube is a YouTube clone built with nodejs, expressjs & mongodb.
+
+### Originally developed by Reagan Ekhameye (Tech Reagan)
+
+Reach him on twitter [@techreagan](https://www.twitter.com/techreagan)
+
+My goal here is essentially to rewrite his repo with modern techs (notably buildless Vue3 in front, and FoalTS, typescript and postgresql in serverside)
 
 ## Features
 
 > CRUD (Create, Read, Update And Delete)
 
-- Authentication with JWT (Reset Password with email)
+- Authentication with short-timed JWT (Reset Password with email)
   - Login (User/Admin)
   - Register
   - Forgot Password
@@ -46,75 +52,70 @@ Extensive and testing documentation with postman: [VueTube API](https://document
 
 ## Database Model
 
-Though the diagram uses sql data type, this diagram is to show you the various collections in the mongo database.
+(generated from [dbdiagrams.io](https://dbdiagram.io))
 
-![Screenshot](screenshots/vue_tube_ERD.jpg)
+![Screenshot](assets/screenshots/vue_tube_ERD.jpg)
 
-## Requirement
+## Requirements
 
 - NodeJS
-- MongoDB
+- PostgreSQL
 
 ## Configuration File
 
-Rename the config/.env.example to .env, then modify to your environment variables, mongodb uri, set your JWT_SECRET and SMTP variables
-
-```ENV
-NODE_ENV=development
-PORT=3001
-
-MONGO_URI=YOUR_URL
-
-JWT_SECRET=YOUR_SECRET
-JWT_EXPIRE=30d
-JWT_COOKIE_EXPIRE=30
-
-FILE_UPLOAD_PATH = ./public/uploads
-MAX_FILE_UPLOAD = 1000000
-
-SMTP_HOST=smtp.mailtrap.io
-SMTP_PORT=2525
-SMTP_EMAIL=
-SMTP_PASSWORD=
-FROM_EMAIL=noreply@quizapp.com
-FROM_NAME=QuizzApp
-```
+Rename the `.env.example` to `.env`, then modify to your environment variables, PostgreSQL uri, set your JWT_SECRET and SMTP variables
 
 Email testing: use mailtrap for email testing, it's easy no stress.
 
 ## Installation
 
-Install all npm dependecies
+Install all dependencies
 
 ```console
-npm install
+yarn
 ```
 
-Install nodemon globally
+Create the databases `vuetube-*` (typeorm won't create it if not exist !)
 
 ```console
-npm install -g nodemon
+createdb -U postgres vuetube
+createdb -U postgres vuetube-e2e
+createdb -U postgres vuetube-test
 ```
 
-Run database seeder
-
-- Seeder folder is \_data/
-- Edit the seeder file if you want to
+Run migration queries to create tables
 
 ```console
-node seeder -i
+yarn migrations
 ```
 
-Delete all data
+... then populate tables using the shell-scripts from scripts folder. Example below :
 
 ```console
-node seeder -d
+foal run create-user channelName="Tech Reagan" email="techreagan@gmail.com" password="123456abcdef"
+```
+
+... should display for each successfully inserted user :
+
+<pre>
+User {
+  channelName: 'Tech Reagan',
+  email: 'techreagan@gmail.com',
+  password: 'pbkdf2_sha256$150000$utAROMwDWVWLhTKO+//K4w==$8uoLrwiK4CRn0r4k7wcKarhFD9i9JLxDHFJxeuYKjCQ=',  // Hashed password
+  id: 1  // Auto-generated ID
+}
+</pre>
+
+Delete all data (WARNING this will destroy ALL tables AND database !)
+
+```console
+dropdb -U postgres vuetube
 ```
 
 ## Start web server
 
 ```console
-node run dev
+yarn develop
 ```
 
 ## Screenshots
@@ -123,30 +124,26 @@ node run dev
 
 ### Sign In
 
-![Screenshot](screenshots/20%20-%20Sign%20in.jpg)
+![Screenshot](assets/screenshots/20%20-%20Sign%20in.jpg)
 
 ### Sign Up
 
-![Screenshot](screenshots/21%20-%20Sign%20up.jpg)
+![Screenshot](assets/screenshots/21%20-%20Sign%20up.jpg)
 
 ### Home Page
 
-![Screenshot](screenshots/1%20-%20Home.jpg)
+![Screenshot](assets/screenshots/1%20-%20Home.jpg)
 
 ### Watch Page
 
-![Screenshot](screenshots/7%20-%20Watch.jpg)
+![Screenshot](assets/screenshots/7%20-%20Watch.jpg)
 
 ### Upload Thumbnail Modal
 
-![Screenshot](screenshots/16%20-%20Upload%20Thumbnail%20Modal.jpg)
+![Screenshot](assets/screenshots/16%20-%20Upload%20Thumbnail%20Modal.jpg)
 
 For more screenshots check out the vue frontend repo [VueTube](https://github.com/techreagan/vue-nodejs-youtube-clone)
 
 ## License
 
 This project is licensed under the MIT License
-
-## Developed by Reagan Ekhameye (Tech Reagan)
-
-Reach me on twitter [@techreagan](https://www.twitter.com/techreagan)

@@ -1,0 +1,7 @@
+settings:
+  loggerFormat: none
+
+database:
+  database: vuetube-e2e
+  dropSchema: true
+  synchronize: true
